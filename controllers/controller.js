@@ -12,11 +12,11 @@ let StoredData = [];
 const SignIn = async (req, res) => {
   const { email, password } = req.body;
 
-  const User = await UserModel.findOne({ email:email });
-  console.log(User)
+  const User = await UserModel.findOne({ email: email });
+  console.log(User);
 
   if (!User) {
-    return res.send("User is not registered");
+    return res.send({ msg: "User is not registered" });
   }
 
   const isMatch = bcrypt.compareSync(password, User.password);
@@ -24,9 +24,9 @@ const SignIn = async (req, res) => {
   if (isMatch) {
     const token = jwt.sign({ email: email }, SECRET_KEY, { expiresIn: "3D" });
 
-    return res.send("User logged in successfully");
+    return res.send({ msg: "User logged in successfully", token: token });
   } else {
-    return res.send("please enter correct password");
+    return res.send({ msg: "please enter correct password" });
   }
 };
 
@@ -34,10 +34,10 @@ const Register = async (req, res) => {
   const { name, email, password, phoneNo, address } = req.body;
 
   const User = await UserModel.findOne({ email });
-  console.log(User,'user msgggg');
+  console.log(User, "user msgggg");
 
   if (User) {
-    return res.send("User already registered");
+    return res.send({ msg: "User already registered" });
   }
 
   const hashPass = bcrypt.hashSync(password, 10);
@@ -55,7 +55,7 @@ const Register = async (req, res) => {
   await tempObj.save();
   StoredData.push(tempObj);
 
-  return res.send("User succesfully registered");
+  return res.send({ msg: "User succesfully registered", token: token });
 };
 
 const data = async (req, res) => {
@@ -2469,7 +2469,7 @@ const addData = (req, res) => {
       product: "Oversized T-shirt",
       price: 699,
       description:
-      "Oversized T-shirt in soft cotton jersey with a rib-trimmed neckline and low dropped shoulders.",
+        "Oversized T-shirt in soft cotton jersey with a rib-trimmed neckline and low dropped shoulders.",
       rating: 4.3,
       image:
         "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F61%2F60%2F61605a4986e807372edab31245c4b918bc1a450a.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
