@@ -3,7 +3,7 @@ const route = express.Router();
 
 const { SignIn, Register, data } = require("../controllers/controller");
 
-route.use("/signin", SignIn);
+route.post("/login", SignIn);
 
 route.post("/register", Register);
 

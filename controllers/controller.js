@@ -9,14 +9,11 @@ const SECRET_KEY = process.env.SecretKey;
 
 let StoredData = [];
 
-const SignIn = (req, res) => {
+const SignIn = async (req, res) => {
   const { email, password } = req.body;
 
-  const User = StoredData.find((item) => {
-    if (email === item.email) {
-      return item;
-    }
-  });
+  const User = await UserModel.findOne({ email:email });
+  console.log(User)
 
   if (!User) {
     return res.send("User is not registered");
@@ -33,11 +30,12 @@ const SignIn = (req, res) => {
   }
 };
 
-const Register = (req, res) => {
-  const { name, email, password } = req.body;
+const Register = async (req, res) => {
+  const { name, email, password, phoneNo, address } = req.body;
 
-  const User = UserModel.find({ email });
-  console.log(User);
+  const User = await UserModel.findOne({ email });
+  console.log(User,'user msgggg');
+
   if (User) {
     return res.send("User already registered");
   }
@@ -49,10 +47,12 @@ const Register = (req, res) => {
   const tempObj = new UserModel({
     name: name,
     email: email,
+    phoneNo: phoneNo,
+    address: address,
     password: hashPass,
   });
 
-  tempObj.save();
+  await tempObj.save();
   StoredData.push(tempObj);
 
   return res.send("User succesfully registered");
@@ -2453,14 +2453,302 @@ const addData = (req, res) => {
     {
       ids: 101,
       category: "women",
-      subcategory: "tshirt",
-      product: "ANALOGUE Analog Watch",
-      price: 245,
+      subcategory: "tshirts",
+      product: "Boxy T-shirt",
+      price: 699,
       description:
-        "All Matte Grey Elegant Series with Water Resistant & 1 Year Quartz Machinery Warranty Analog Watch - For Boys ANLG-428-GREY-GREY",
-      rating: 3,
+        "Boxy T-shirt in soft cotton jersey with a round, rib-trimmed neckline, dropped shoulders and wide sleeves that finish just above the elbow",
+      rating: 4.3,
       image:
-        "https://rukminim2.flixcart.com/image/832/832/xif0q/watch/r/a/h/-original-imagpzzjeymdfvye.jpeg?q=70",
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F00%2F0f%2F000f61c10d0a70fc44437270fc8d3073238ad09d.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 102,
+      category: "women",
+      subcategory: "tshirts",
+      product: "Oversized T-shirt",
+      price: 699,
+      description:
+      "Oversized T-shirt in soft cotton jersey with a rib-trimmed neckline and low dropped shoulders.",
+      rating: 4.3,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F61%2F60%2F61605a4986e807372edab31245c4b918bc1a450a.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 103,
+      category: "women",
+      subcategory: "tshirts",
+      product: "Oversized T-shirt",
+      price: 1299,
+      description:
+        "Oversized T-shirt in soft cotton jersey with a print motif on the front. Ribbed trim around the neckline and dropped shoulders.",
+      rating: 4.3,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F54%2F0f%2F540f9169ab4bab0115a3ddf35e4661e836ab4b8f.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 104,
+      category: "women",
+      subcategory: "tshirts",
+      product: "V-neck T-shirt",
+      price: 799,
+      description:
+        "T-shirt in viscose jersey with a deep V-neckline and a straight-cut hem",
+      rating: 4.3,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F0e%2F4e%2F0e4eab8f679a825376e87650862d86ffdda8fe2c.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 105,
+      category: "women",
+      subcategory: "tshirts",
+      product: "Oversized printed T-shirt",
+      price: 1299,
+      description:
+        "Oversized T-shirt in soft, printed cotton jersey with a ribbed trim around the neckline and dropped shoulders.",
+      rating: 4.3,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F98%2F4c%2F984ca3bf7032a4eb76185fe1abcc9ff21b204e04.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 106,
+      category: "women",
+      subcategory: "tops",
+      product: "Flounce-trimmed top",
+      price: 2699,
+      description:
+        "Sleeveless top in woven fabric with a slight sheen. Round neckline and an opening with a concealed button at the back of the neck.",
+      rating: 4.3,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2F40%2F70%2F40702755472c687a9b098108c4fddfd9cb898b8e.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D",
+    },
+    {
+      ids: 107,
+      category: "women",
+      subcategory: "tops",
+      product: "Ribbed modal-blend top",
+      price: 799,
+      description:
+        "Fitted top in soft, ribbed cotton and modal jersey with a round neckline and long sleeves.",
+      rating: 4.3,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F86%2Fb8%2F86b8b65cb530dd2fc648ecea5a9d11f08982bbd8.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 108,
+      category: "women",
+      subcategory: "tops",
+      product: "Off-the-shoulder top",
+      price: 1499,
+      description:
+        "Fitted, off-the-shoulder top in heavy jersey made from a viscose blend. Long sleeves and a straight-cut hem.",
+      rating: 4.3,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F7f%2F31%2F7f31853cbcce032d380d37ece7b4858ccbeddd04.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 109,
+      category: "women",
+      subcategory: "tops",
+      product: "Jersey vest top",
+      price: 1499,
+      description:
+        "Fitted vest top in sturdy jersey made from a viscose blend with V-shaped boning at the front creating the perfect sweetheart neckline. Lined at the top.",
+      rating: 4,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F80%2F66%2F806632cdd6b19f5dcae3b78c4ddff0d918157c04.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 110,
+      category: "women",
+      subcategory: "tops",
+      product: "Draped turtleneck top",
+      price: 1299,
+      description:
+        "Fitted top in jersey with a turtle neck, long sleeves and gathered seams at one shoulder and at the sides for a draped effect.",
+      rating: 5,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F34%2F77%2F3477cb0887807f2683008558e93c049af27ac85b.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 111,
+      category: "women",
+      subcategory: "trouser",
+      product: "Wide trousers",
+      price: 2699,
+      description:
+        "Tailored, loose-fitting trousers in woven fabric. High waist with concealed elastication and a zip fly.",
+      rating: 4.5,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2Fb6%2F09%2Fb6096827602d518ec0c0f4370b456a07e0662711.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 112,
+      category: "women",
+      subcategory: "trouser",
+      product: "Cotton-blend sweatpants",
+      price: 1299,
+      description:
+        "Sweatpants in soft sweatshirt fabric made from a cotton blend. High waist with covered elastication and a drawstring, side pockets, and covered elastication at the hems. Soft brushed inside",
+      rating: 4.3,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2Fa2%2Fe4%2Fa2e43ada543916808b6ed0999b59f8f2b6cdd40e.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D",
+    },
+    {
+      ids: 113,
+      category: "women",
+      subcategory: "trouser",
+      product: "Crinkled trousers",
+      price: 2199,
+      description:
+        "Trousers in crinkled jersey. Loose fit with a high, elasticated waist and wide, straight legs.",
+      rating: 5,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F59%2F1e%2F591eea38faaf08709c41e0155e9dfdcef0ba5c28.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 114,
+      category: "women",
+      subcategory: "trouser",
+      product: "Canvas cargo trousers",
+      price: 1799,
+      description:
+        "Relaxed-fit cargo trousers in cotton canvas. Low waist with covered elastication at the sides and back, a zip fly with a press-stud, diagonal side pockets and straight legs.",
+      rating: 4.5,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2Fae%2F4a%2Fae4a81ef868de9b79c196c0bd4098f91ca5473c4.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 115,
+      category: "women",
+      subcategory: "trouser",
+      product: "Twill cargo trousers",
+      price: 1999,
+      description:
+        "Loose-fit cargo trousers in cotton twill with a high waist and a zip fly and button. Diagonal front pockets, back pockets and bellows leg pockets.",
+      rating: 4.3,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F00%2Fbf%2F00bf2c7fd7c1e8d8313a14a66cd61b027fa73e2c.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 116,
+      category: "women",
+      subcategory: "blazers",
+      product: "Double-breasted blazer",
+      price: 3599,
+      description:
+        "Loose-fit, double-breasted blazer in woven fabric with notch lapels and buttons at the front. Welt chest pocket, welt front pockets with a flap, and a single back vent.",
+      rating: 4.5,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2Fa6%2F3f%2Fa63f69ead6ba210fbc25cd7022e7e6293cf17403.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 117,
+      category: "women",
+      subcategory: "blazers",
+      product: "Oversized bouclé blazer",
+      price: 3599,
+      description:
+        "Oversized blazer in a bouclé weave with peak lapels and gold-coloured buttons at the front. Shoulder pads, long sleeves and flap front pockets. Lined.",
+      rating: 4.3,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2F8a%2F99%2F8a99826d883e11dba3c0bc3abf2e5514eacf999d.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D",
+    },
+    {
+      ids: 118,
+      category: "women",
+      subcategory: "blazers",
+      product: "Double-breasted blazer",
+      price: 2699,
+      description:
+        "Double-breasted blazer in woven fabric with peak lapels and buttons at the front. Shoulder pads, long sleeves, jetted front pockets with a flap and a welt chest pocket. Lined.",
+      rating: 4.3,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2Fe2%2F97%2Fe29736ec172cce57914212f721f3200d96be60bf.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 119,
+      category: "women",
+      subcategory: "blazers",
+      product: "Single-breasted jacket",
+      price: 2999,
+      description:
+        "Single-breasted jacket in woven fabric with notch lapels and a single button at the front. ",
+      rating: 5,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F4d%2F83%2F4d8322a2f62b806c06706f5accb4ee6f52d18399.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 120,
+      category: "women",
+      subcategory: "blazers",
+      product: "Single-breasted blazer",
+      price: 4999,
+      description:
+        "Single-breasted blazer in woven fabric. Loose fit with peak lapels and one button at the front. Shoulder pads and long sleeves with buttoned cuffs. ",
+      rating: 4.1,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F57%2Faa%2F57aaf3f3efec339fd0a68387d6cffd8319e20ae1.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 121,
+      category: "women",
+      subcategory: "dress",
+      product: "Pleated chiffon dresst",
+      price: 3999,
+      description:
+        "Calf-length dress in crêpe chiffon with gathers at the front and back and a round neckline with a small opening and a concealed button at the front.",
+      rating: 5,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2Fac%2F98%2Fac98f9520a988d4b92ca8837da984caf32b10e36.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 122,
+      category: "women",
+      subcategory: "dress",
+      product: "Satin shirt dress",
+      price: 1499,
+      description:
+        "Short dress in softly draping satin with a collar and buttons down the front. Long balloon sleeves with buttoned cuffs, narrow elastication at the waist and a straight-cut hem.",
+      rating: 3.5,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F29%2F23%2F29238b7950926ed2749947e7cfbdea0fcc3a3fd5.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 123,
+      category: "women",
+      subcategory: "dress",
+      product: "Satin slip dress",
+      price: 2299,
+      description:
+        "Calf-length dress in softly draping satin with a square neckline, adjustable spaghetti shoulder straps and a concealed zip at one side.",
+      rating: 4,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F03%2F70%2F0370aa8147f5441680a3292e34fb127565b73d7b.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 124,
+      category: "women",
+      subcategory: "dress",
+      product: "Boxy T-shirt",
+      price: 699,
+      description:
+        "Boxy T-shirt in soft cotton jersey with a round, rib-trimmed neckline, dropped shoulders and wide sleeves that finish just above the elbow",
+      rating: 4.3,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F00%2F0f%2F000f61c10d0a70fc44437270fc8d3073238ad09d.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
+    },
+    {
+      ids: 125,
+      category: "women",
+      subcategory: "dress",
+      product: "Tie-detail satin dress",
+      price: 2999,
+      description:
+        "Boxy T-shirt in soft cotton jersey with a round, rib-trimmed neckline, dropped shoulders and wide sleeves that finish just above the elbow",
+      rating: 3.1,
+      image:
+        "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2Fd8%2F9e%2Fd89e98b5bf787f163351bbcddbda9f8a080e8a5b.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
     },
   ];
 
