@@ -264,6 +264,19 @@ const orderDetails = async (req, res) => {
   }
 };
 
+const searchProducts = async (req, res) => {
+  const query = await req.params.data;
+  console.log(query);
+
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const reg = new RegExp(query, "i");
+  const searchedProduct = await Product.find({
+    $or: [{ product: reg }],
+  });
+
+  return res.send(searchedProduct);
+};
+
 const addData = (req, res) => {
   const data = [
     {
@@ -1793,4 +1806,5 @@ module.exports = {
   deleteItem,
   logOut,
   orderDetails,
+  searchProducts,
 };

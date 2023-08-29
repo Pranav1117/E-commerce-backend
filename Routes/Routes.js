@@ -11,6 +11,7 @@ const {
   deleteItem,
   logOut,
   orderDetails,
+  searchProducts,
 } = require("../controllers/controller");
 
 const { isLoggedIn } = require("../middleaware/middleware");
@@ -33,5 +34,7 @@ route.post("/deleteitemcart", deleteItem);
 route.get("/logout", logOut);
 
 route.get("/data", isLoggedIn, data);
+
+route.get("/search/:data", searchProducts);
 
 module.exports = { route };
